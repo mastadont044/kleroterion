@@ -1,0 +1,25 @@
+{
+  "token": "0x39dbed3a2bd333467115de45665cc57f813c4571",
+  "pot": "0",
+  "prize_asset": "native",
+  "payout_bps": 100,
+  "big_payout_bps": 2000,
+  "big_every": 12,
+  "draws_until_big": 11,
+  "interval_sec": 300,
+  "next_draw": null,
+  "updated_at": 1789336010,
+  "recent": [
+    {
+      "draw": 1,
+      "kind": "micro",
+      "winner": "0x8366a39CC670B4001A1121B8F6A443A643e40951",
+      "prize_amount": "0",
+      "tx": null,
+      "timestamp": 1789336010,
+      "eligible_holders": 227,
+      "block": 62286047,
+      "block_hash": "0x61a432889a2d4f4b7624668095c07adfa31f20e01c294674d77c055770e2d7e6"
+    }
+  ]
+}
