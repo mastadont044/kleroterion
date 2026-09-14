@@ -67,7 +67,11 @@ h1 span{color:var(--gold-soft)}
 .chartcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:300px}
 .chartcard .bar{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid var(--line);font-size:.8rem;color:var(--dim)}
 .chartcard iframe{border:0;width:100%;flex:1;min-height:280px;display:block}
+/* display:block above beats the browser's [hidden] rule, so say it again */
+.chartcard iframe[hidden]{display:none}
 .chart-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--dim);text-align:center;padding:30px;font-size:.9rem}
+.chartcard.empty{min-height:0}
+.chartcard.empty .chart-empty{padding-block:64px}
 
 /* ---- the heartbeat ---- */
 .pulse{
@@ -332,12 +336,21 @@ async function loadMarketCap(){
 
 const usd = n => n==null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
 
+// Reasons a draw is on hold that have nothing to do with price.
+const HOLD = {
+  pool: ["Getting ready", "Identifying the pool before the first draw runs."],
+  pot:  ["Pot is empty", "Draws resume as soon as trading fees come in."],
+};
+
 // null = no gate configured at all.
 function gate(){
+  const code = state.gate_code || "open";
+  const open = state.armed !== false;
   const min = Number(state.min_market_cap || 0);
-  if(!(min > 0)) return null;
+  const hold = !open && HOLD[code] ? HOLD[code] : null;
+  if(!(min > 0) && !hold) return null;
   const published = state.market_cap==null ? null : Number(state.market_cap);
-  return { min, mc: liveMc!=null ? liveMc : published, open: state.armed !== false };
+  return { min, mc: liveMc!=null ? liveMc : published, open, code, hold };
 }
 
 const $ = id => document.getElementById(id);
@@ -391,6 +404,7 @@ function applyLinks(){
   set("xLink",CFG.x); set("tgLink",CFG.telegram); set("buyLink",CFG.buy);
   $("buyLink").textContent = CFG.buy ? `Buy ${CFG.ticker}` : "Not live yet";
   $("repoLink").href = CFG.repo; $("repoLink2").href = CFG.repo;
+  document.querySelector(".chartcard").classList.toggle("empty", !CFG.pair);
   if(CFG.pair){
     const f=$("chartFrame");
     f.src=`https://dexscreener.com/${CFG.chain}/${CFG.pair}?embed=1&theme=dark&info=0&trades=0`;
@@ -415,10 +429,11 @@ function render(){
     el.classList.toggle("pending",!live);
     el.textContent = potText;
   }
-  $("potLabel").textContent = (g && !g.open) ? "Prize pool · already filling" : "Prize pool";
+  // Only claim it is filling if there is actually something in it.
+  $("potLabel").textContent = (g && !g.open && live) ? "Prize pool · already filling" : "Prize pool";
 
   const note = $("gateNote");
-  if(g && !g.open){
+  if(g && !g.open && g.min > 0){
     note.hidden = false;
     note.innerHTML = `Draws begin the moment the market cap reaches <b>${usd(g.min)}</b>. `+
       `Until then every fee still goes into the pot and nothing is paid out, so the first `+
@@ -441,7 +456,7 @@ function render(){
 
   const rows=$("rows");
   if(!state.recent || !state.recent.length){
-    rows.innerHTML = `<tr><td colspan="6">${g && !g.open
+    rows.innerHTML = `<tr><td colspan="6">${g && !g.open && g.min > 0
       ? `No draws yet. The first one runs at ${usd(g.min)} market cap.`
       : "No draws yet. They start once the pool is funded."}</td></tr>`;
   } else {
@@ -459,9 +474,14 @@ function render(){
     if(last) seenTopDraw = last.draw;
   }
 
-  const stale = Date.now()/1000-(state.updated_at||0) > 3*(state.interval_sec||300);
-  $("updated").innerHTML = state.demo ? `<span class="stale">draws start after launch</span>`
-    : `updated ${ago(state.updated_at)}` + (stale?` <span class="stale">· worker may be down</span>`:"");
+  // Nothing has run yet is a normal state, not a fault: never show an alarm for it.
+  if(state.demo || !state.updated_at){
+    $("updated").innerHTML = `<span class="muted">not live yet</span>`;
+  }else{
+    const stale = Date.now()/1000-state.updated_at > 3*(state.interval_sec||300);
+    $("updated").innerHTML = `updated ${ago(state.updated_at)}`
+      + (stale?` <span class="stale">· worker may be down</span>`:"");
+  }
 }
 
 function hms(sec){
@@ -484,14 +504,24 @@ function tick(){
   // The gate: no draw runs until the market cap clears the threshold. The big number
   // becomes the market cap itself, so the wait is something to watch, not a blank page.
   const g = gate();
+  if(g && g.hold){
+    // Held for a reason the market cap bar would misrepresent.
+    box.classList.add("locked");
+    label.textContent = g.hold[0];
+    clock.textContent = "—";
+    clock.classList.add("small");
+    fill.style.width = "0%";
+    sub.innerHTML = g.hold[1];
+    sub.hidden = false;
+    return;
+  }
   if(g && !g.open){
     box.classList.add("locked");
     if(g.mc == null){
-      label.innerHTML = `Draws unlock at <b>${usd(g.min)}</b> market cap`;
-      clock.textContent = "—";
-      clock.classList.add("small");
+      label.innerHTML = "Draws unlock at a market cap of";
+      clock.textContent = usd(g.min);
       fill.style.width = "0%";
-      sub.innerHTML = "Waiting for the first trades to show up on the chart.";
+      sub.innerHTML = "Nothing is paid out before that. The pot fills up the whole time.";
     }else if(g.mc >= g.min){
       label.innerHTML = `<b>${usd(g.min)}</b> reached — first draw starting`;
       clock.textContent = usd(g.mc);
