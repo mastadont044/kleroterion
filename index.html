@@ -6,149 +6,160 @@
 <title>Kleroterion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
 :root{
-  --basalt:#12100e;
-  --basalt-2:#1a1714;
-  --slab:#221d18;
-  --line:#332b23;
-  --stone:#ddd5c4;
-  --stone-dim:#9b9184;
-  --bronze:#c08a3e;
-  --bronze-hi:#e0ab5b;
-  --verdigris:#4f9c86;
-  --ember:#c4553a;
+  --bg:#111010;
+  --panel:#1a1918;
+  --panel-2:#221f1d;
+  --line:#302d29;
+  --text:#f4f2ee;
+  --soft:#c6c1b9;
+  --dim:#928d85;
+  --gold:#e3ab4c;
+  --gold-soft:#f0c375;
+  --green:#63c2a0;
+  --red:#e0674a;
 }
 *{box-sizing:border-box}
-html{background:var(--basalt)}
+html{background:var(--bg)}
 body{
-  margin:0;background:var(--basalt);color:var(--stone);
-  font-family:Archivo,system-ui,sans-serif;line-height:1.6;
-  padding-inline:18px;-webkit-font-smoothing:antialiased;
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Manrope,system-ui,sans-serif;font-size:17px;line-height:1.68;
+  padding-inline:20px;-webkit-font-smoothing:antialiased;
 }
-.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.wrap{max-width:900px;margin:0 auto}
-a{color:var(--bronze-hi);text-decoration:none}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1060px;margin:0 auto}
+a{color:var(--gold-soft);text-decoration:none}
 a:hover{text-decoration:underline}
-a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
-.label{
-  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--stone-dim);font-weight:500
-}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+p{margin:0 0 14px}
+.muted{color:var(--soft)}
 
-/* ---------- header ---------- */
-header{
-  padding-block:26px 10px;display:flex;justify-content:space-between;
-  align-items:center;gap:14px;flex-wrap:wrap
+header{padding-block:24px 4px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:1.05rem;letter-spacing:.01em}
+.brand span{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;margin-left:8px}
+.head-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chip,.btn{
+  font-size:.83rem;border-radius:6px;padding:8px 13px;border:1px solid var(--line);
+  color:var(--soft);background:var(--panel);font-weight:500
 }
-.brand{display:flex;align-items:baseline;gap:10px}
-.brand .name{font-family:Cinzel,serif;font-weight:700;font-size:1.15rem;letter-spacing:.06em}
-.brand .tick{font-family:'IBM Plex Mono',monospace;color:var(--bronze);font-size:.85rem}
-.head-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ca{
-  font-family:'IBM Plex Mono',monospace;font-size:.74rem;color:var(--stone-dim);
-  background:var(--basalt-2);border:1px solid var(--line);border-radius:4px;
-  padding:5px 10px;cursor:pointer
-}
-.ca:hover{color:var(--stone);border-color:var(--bronze)}
-.btn{
-  font-weight:700;font-size:.82rem;letter-spacing:.04em;border-radius:4px;
-  padding:8px 16px;border:1px solid var(--line);color:var(--stone);
-  background:var(--basalt-2);display:inline-block
-}
-.btn:hover{border-color:var(--bronze);text-decoration:none}
-.btn.primary{
-  background:linear-gradient(180deg,var(--bronze-hi),var(--bronze));
-  color:#1d1204;border-color:#8c6222
-}
-.btn.primary:hover{background:var(--bronze-hi)}
+.chip{font-family:'JetBrains Mono',monospace;font-size:.76rem;cursor:pointer}
+.chip:hover,.btn:hover{color:var(--text);border-color:#4a453f;text-decoration:none}
+.btn[aria-disabled="true"]{opacity:.38;pointer-events:none}
 
-/* ---------- hero ---------- */
-.hero{
-  display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;
-  background:radial-gradient(120% 100% at 50% 0%,#1d1915 0%,var(--basalt) 70%);
-  border:1px solid var(--line);border-radius:12px;padding:32px 30px;margin-top:10px
-}
-.pot{
-  font-family:'IBM Plex Mono',monospace;font-weight:600;
-  font-size:clamp(2.6rem,9vw,4.2rem);line-height:1;color:var(--bronze-hi);
-  margin:8px 0 4px;font-variant-numeric:tabular-nums
-}
-.pot small{font-size:.3em;color:var(--bronze);margin-left:.3em;letter-spacing:.05em}
-.hero-note{color:var(--stone-dim);font-size:.92rem;margin:0 0 18px;max-width:34ch}
-.counters{display:flex;gap:24px;flex-wrap:wrap}
-.counters .v{font-family:'IBM Plex Mono',monospace;font-size:1.35rem;font-weight:600;margin-top:2px}
-.counters .big .v{color:var(--ember)}
+.hero{display:grid;grid-template-columns:1.02fr .98fr;gap:30px;margin-top:16px;align-items:start}
+h1{font-size:clamp(2rem,4.2vw,2.9rem);line-height:1.12;font-weight:800;margin:2px 0 18px;letter-spacing:-.015em;text-wrap:balance}
+h1 span{color:var(--gold-soft)}
+.hero p{color:var(--soft);max-width:48ch}
 
-/* ---------- the machine ---------- */
+.buybar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:24px}
+.buy{
+  background:var(--gold);color:#181205;border:0;border-radius:7px;
+  padding:14px 28px;font-weight:800;font-size:1rem;font-family:inherit;cursor:pointer
+}
+.buy:hover{background:var(--gold-soft);text-decoration:none}
+.buy[aria-disabled="true"]{background:#413c34;color:var(--dim);pointer-events:none}
+.potline{font-size:.9rem;color:var(--dim)}
+.potline b{display:block;font-family:'JetBrains Mono',monospace;font-size:1.35rem;color:var(--gold-soft);font-weight:500;line-height:1.3}
+.potline b.pending{font-family:Manrope,sans-serif;font-size:.95rem;color:var(--soft);font-weight:500}
+
+.chartcard{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:300px}
+.chartcard .bar{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1px solid var(--line);font-size:.8rem;color:var(--dim)}
+.chartcard iframe{border:0;width:100%;flex:1;min-height:280px;display:block}
+.chart-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--dim);text-align:center;padding:30px;font-size:.9rem}
+
+/* ---- the heartbeat ---- */
+.pulse{
+  margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:22px 26px 18px;position:relative;overflow:hidden
+}
+.pulse.due{border-color:#5a6f52}
+.pulse.bignext{border-color:#6b5427}
+.pulse.locked{border-color:#3b4a44}
+.pulse.locked .clock{color:var(--green)}
+.pulse.locked .track i{background:var(--green)}
+.gate-sub{margin-top:13px;font-size:.88rem;color:var(--dim)}
+.gate-sub b{color:var(--soft);font-weight:600}
+.pulse-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.clock{
+  font-family:'JetBrains Mono',monospace;font-weight:500;line-height:1;
+  font-size:clamp(3rem,10vw,5.2rem);letter-spacing:-.02em;color:#ece6da;
+  font-variant-numeric:tabular-nums;transition:color .4s
+}
+.pulse.due .clock{color:var(--gold)}
+.pulse.bignext .clock{color:var(--gold-soft)}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.55}}
+.pulse.due .clock{animation:breathe 1.2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.pulse.due .clock{animation:none}}
+.clock.small{font-size:clamp(1.4rem,4vw,2rem);color:var(--soft)}
+.pulse-label{font-size:.95rem;color:var(--dim);margin-bottom:6px}
+.pulse-label b{color:var(--soft);font-weight:600}
+.pulse-right{text-align:right}
+.pulse-right .k{font-size:.85rem;color:var(--dim)}
+.pulse-right .v{font-family:'JetBrains Mono',monospace;font-size:1.6rem;color:var(--gold-soft);line-height:1.25}
+.pulse-right .v.pending{font-family:Manrope,sans-serif;font-size:.95rem;color:var(--soft)}
+.track{height:4px;background:#2a2724;border-radius:3px;margin-top:18px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--gold);width:0%;transition:width .9s linear}
+.pulse.due .track i{background:var(--gold-soft)}
+.pulse.bignext .track i{background:var(--gold-soft)}
+@keyframes flash{0%{background:rgba(99,194,160,.16)}100%{background:transparent}}
+tr.fresh td{animation:flash 3.5s ease-out}
+@media (prefers-reduced-motion: reduce){tr.fresh td{animation:none}}
+
+.numbers{display:flex;gap:36px;flex-wrap:wrap;margin-top:26px;padding-top:26px;border-top:1px solid var(--line)}
+.numbers div .k{font-size:.85rem;color:var(--dim);margin-bottom:2px}
+.numbers div .v{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:500}
+.numbers .next .v{color:var(--green)}
+.numbers .big .v{color:var(--red)}
+
+section{margin-top:52px}
+h2{font-size:1.35rem;font-weight:800;margin:0 0 16px;letter-spacing:-.01em}
+
+.machine-row{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center}
 .machine{width:100%;height:auto;display:block}
-.slot{fill:#0d0b09}
-.slot.filled{fill:var(--bronze);opacity:.55}
-.slot.hit{fill:var(--verdigris);opacity:1}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.slot.hit{animation:pulse 2.4s ease-in-out infinite}
+.slot{fill:#0a0908}
+.slot.filled{fill:var(--gold);opacity:.9}
+.slot.hit{fill:var(--green)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.slot.hit{animation:pulse 2.6s ease-in-out infinite}
 @media (prefers-reduced-motion: reduce){.slot.hit{animation:none}}
 
-/* ---------- strips ---------- */
-.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
-.rule{background:var(--slab);border:1px solid var(--line);border-radius:8px;padding:15px 17px}
-.rule .v{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:600;margin-top:3px}
-.rule.hot{border-color:#4a2d24}
-.rule.hot .v{color:var(--ember)}
+.how{border-top:1px solid var(--line);margin-top:30px;padding-top:8px}
+.how p{color:var(--soft);padding:14px 0;border-bottom:1px solid var(--line);margin:0;display:flex;gap:16px}
+.how p:last-child{border-bottom:none}
+.how b{color:var(--gold);font-family:'JetBrains Mono',monospace;font-weight:500;flex:none;width:22px}
+code{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-size:.84em;color:var(--text)}
 
-section{margin-top:34px}
-h2{font-family:Cinzel,serif;font-size:1.15rem;letter-spacing:.05em;margin:0 0 14px;font-weight:700}
-
-/* ---------- table ---------- */
-.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--slab)}
-table{border-collapse:collapse;width:100%;min-width:580px;font-size:.87rem}
-th{
-  text-align:left;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--stone-dim);font-weight:600;padding:11px 15px;border-bottom:1px solid var(--line)
-}
-td{padding:12px 15px;border-bottom:1px solid rgba(51,43,35,.55)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.9rem}
+th{text-align:left;font-size:.8rem;color:var(--dim);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line)}
+td{padding:13px 16px;border-bottom:1px solid #262421;color:var(--soft)}
 tr:last-child td{border-bottom:none}
-.kind{
-  font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;
-  border-radius:3px;border:1px solid var(--line);color:var(--stone-dim)
-}
-.kind.big{color:var(--ember);border-color:#4a2d24}
-td.amt{color:var(--bronze-hi)}
+.kind{font-size:.75rem;padding:2px 9px;border-radius:4px;border:1px solid var(--line);color:var(--dim)}
+.kind.big{color:var(--red);border-color:#4d2c21}
+td.amt{color:var(--gold-soft)}
 
-/* ---------- checker ---------- */
 .check{display:flex;gap:10px;flex-wrap:wrap}
 .check input{
-  flex:1;min-width:230px;background:var(--slab);border:1px solid var(--line);
-  color:var(--stone);border-radius:6px;padding:12px 14px;
-  font-family:'IBM Plex Mono',monospace;font-size:.85rem
+  flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line);color:var(--text);
+  border-radius:7px;padding:13px 15px;font-family:'JetBrains Mono',monospace;font-size:.87rem
 }
-#checkOut{margin-top:12px;font-size:.92rem;color:var(--stone-dim)}
-#checkOut b{color:var(--stone)}
-#checkOut .odds{color:var(--bronze-hi);font-family:'IBM Plex Mono',monospace}
+#checkOut{margin-top:14px;color:var(--soft)}
+#checkOut b{color:var(--text)}
+#checkOut .odds{color:var(--gold-soft);font-family:'JetBrains Mono',monospace}
 
-/* ---------- proof ---------- */
-.proof{background:var(--slab);border:1px solid var(--line);border-radius:8px;padding:6px 20px}
-.proof p{display:flex;gap:14px;align-items:flex-start;color:var(--stone-dim);font-size:.93rem}
-.proof .n{
-  flex:none;width:24px;height:24px;border-radius:50%;background:var(--basalt-2);
-  border:1px solid var(--line);color:var(--bronze);font-size:.7rem;font-weight:600;
-  display:flex;align-items:center;justify-content:center;margin-top:3px;
-  font-family:'IBM Plex Mono',monospace
-}
-code{
-  background:var(--basalt-2);border:1px solid var(--line);border-radius:4px;
-  padding:1px 6px;font-family:'IBM Plex Mono',monospace;font-size:.85em;color:var(--stone)
-}
-.origin{color:var(--stone-dim);font-size:.95rem;max-width:68ch;margin:0 0 16px}
-.origin em{color:var(--stone);font-style:normal}
+.archive{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px 26px}
+.archive p{margin:0;color:var(--soft);max-width:58ch}
 
-footer{padding-block:36px 48px;color:var(--stone-dim);font-size:.8rem;text-align:center}
-.stale{color:var(--ember)}
+footer{padding-block:30px 46px;color:var(--dim);font-size:.85rem;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:48px}
+.stale{color:var(--red)}
 
-@media(max-width:720px){
-  .hero{grid-template-columns:1fr;padding:26px 20px;gap:22px}
-  .machine{max-width:320px;margin:0 auto}
+@media(max-width:840px){
+  .hero,.machine-row{grid-template-columns:1fr}
+  .machine{max-width:360px;margin:0 auto}
+  .numbers{gap:26px}
 }
 </style>
 </head>
@@ -156,304 +167,443 @@ footer{padding-block:36px 48px;color:var(--stone-dim);font-size:.8rem;text-align
 <div class="wrap">
 
 <header>
-  <div class="brand">
-    <span class="name">KLEROTERION</span>
-    <span class="tick" id="tick">$KLERO</span>
-  </div>
+  <div class="brand">Kleroterion<span id="tick">$KLERO</span></div>
   <div class="head-right">
-    <span class="ca mono" id="caBtn" role="button" tabindex="0">contract not set</span>
-    <a class="btn" id="xLink" href="#" target="_blank" rel="noopener">X</a>
-    <a class="btn primary" id="buyLink" href="#" target="_blank" rel="noopener">Buy</a>
+    <span class="chip" id="caBtn" role="button" tabindex="0">contract soon</span>
+    <a class="btn" id="xLink" href="#">X</a>
+    <a class="btn" id="tgLink" href="#">Telegram</a>
+    <a class="btn" id="repoLink" href="#" target="_blank" rel="noopener">Proof archive</a>
   </div>
 </header>
 
 <div class="hero">
   <div>
-    <div class="label">Prize pool</div>
-    <div class="pot mono" id="pot">—<small id="potSym"></small></div>
-    <p class="hero-note">Funded only by trading fees. Every holder is a token in the slot.</p>
-    <div class="counters">
-      <div>
-        <div class="label">Next draw</div>
-        <div class="v mono" id="countdown">—</div>
-      </div>
-      <div class="big">
-        <div class="label">Big draw in</div>
-        <div class="v mono" id="bigIn">—</div>
-      </div>
+    <h1>Every five minutes <span>one holder wins</span>.</h1>
+    <p>Trading fees go into one pot. A draw runs every 5 minutes, a bigger one every hour.
+       The more you hold, the better your odds. You do nothing but hold.</p>
+    <p>The winner comes from the hash of a block that had not happened yet when the draw was
+       announced, so the result cannot be arranged in advance. Every balance used is published
+       with the result.</p>
+    <p class="muted" id="gateNote" hidden></p>
+    <div class="buybar">
+      <a class="buy" id="buyLink" href="#">Buy $KLERO</a>
+      <div class="potline">Prize pool<b id="pot">—</b></div>
     </div>
   </div>
 
-  <svg class="machine" viewBox="0 0 380 250" role="img" aria-label="A stone kleroterion with rows of slots">
-    <defs>
-      <linearGradient id="stoneGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#3a322a"/>
-        <stop offset="100%" stop-color="#241f1a"/>
-      </linearGradient>
-      <linearGradient id="tubeGrad" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#8a5f28"/>
-        <stop offset="45%" stop-color="#c08a3e"/>
-        <stop offset="100%" stop-color="#7a5322"/>
-      </linearGradient>
-    </defs>
-    <!-- slab -->
-    <path d="M52 18 L360 14 L366 232 L58 236 Z" fill="url(#stoneGrad)" stroke="#463a2e" stroke-width="2"/>
-    <!-- chipped corner -->
-    <path d="M360 14 L366 232 L340 236 L352 120 Z" fill="#000" opacity=".18"/>
-    <!-- inscription -->
-    <text x="209" y="44" text-anchor="middle" fill="#8d8172" font-family="Cinzel, serif"
-          font-size="15" letter-spacing="3">ΚΛΗΡΩΤΗΡΙΟΝ</text>
-    <line x1="80" y1="56" x2="340" y2="55" stroke="#463a2e" stroke-width="1.5"/>
-    <!-- bronze tube -->
-    <rect x="26" y="24" width="17" height="206" rx="8" fill="url(#tubeGrad)" stroke="#5e4018" stroke-width="1.5"/>
-    <circle cx="34.5" cy="52" r="5" fill="#0d0b09"/>
-    <circle cx="34.5" cy="92" r="5" fill="#e6e0d2"/>
-    <circle cx="34.5" cy="132" r="5" fill="#0d0b09"/>
-    <circle cx="34.5" cy="172" r="5" fill="#e6e0d2"/>
-    <g id="slots"></g>
-  </svg>
+  <div class="chartcard">
+    <div class="bar"><span>Price</span><span class="mono" id="chartVenue">dexscreener</span></div>
+    <div class="chart-empty" id="chartEmpty">
+      <svg width="44" height="32" viewBox="0 0 46 34" fill="none" aria-hidden="true">
+        <path d="M2 30 L13 18 L21 24 L32 8 L44 14" stroke="#e3ab4c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="32" cy="8" r="3.2" fill="#e3ab4c"/>
+      </svg>
+      <div>Chart shows up when the token goes live.</div>
+    </div>
+    <iframe id="chartFrame" title="Price chart" hidden loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
 </div>
 
-<div class="rules">
-  <div class="rule">
-    <div class="label">Every draw</div>
-    <div class="v" id="microPct">—</div>
-    <div class="label" id="microEvery">of the pool</div>
+<div class="pulse" id="pulse">
+  <div class="pulse-top">
+    <div>
+      <div class="pulse-label" id="pulseLabel">Next draw</div>
+      <div class="clock" id="countdown">—</div>
+    </div>
+    <div class="pulse-right">
+      <div class="k" id="potLabel">Prize pool</div>
+      <div class="v mono" id="pot2">—</div>
+    </div>
   </div>
-  <div class="rule hot">
-    <div class="label">Big draw</div>
-    <div class="v" id="bigPct">—</div>
-    <div class="label" id="bigEvery">of the pool</div>
-  </div>
-  <div class="rule">
-    <div class="label">In the last draw</div>
-    <div class="v" id="holders">—</div>
-    <div class="label">holders were eligible</div>
-  </div>
+  <div class="track"><i id="trackFill"></i></div>
+  <div class="gate-sub" id="gateSub" hidden></div>
+</div>
+
+<div class="numbers">
+  <div><div class="k">Each draw pays</div><div class="v mono" id="microPct">—</div></div>
+  <div class="big"><div class="k">Hourly draw pays</div><div class="v mono" id="bigPct">—</div></div>
+  <div><div class="k">In the last draw</div><div class="v mono" id="holders">—</div></div>
+  <div><div class="k">Draws so far</div><div class="v mono" id="totalDraws">—</div></div>
 </div>
 
 <section>
-  <h2>Am I in the slot?</h2>
-  <div class="check">
-    <input id="addr" placeholder="0x… your wallet" spellcheck="false" autocomplete="off">
-    <button class="btn primary" id="checkBtn" type="button">Check</button>
+  <h2>Where the name comes from</h2>
+  <div class="machine-row">
+    <svg class="machine" viewBox="0 0 380 250" role="img" aria-label="Stone kleroterion with rows of slots">
+      <defs>
+        <linearGradient id="stone" x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0%" stop-color="#635648"/><stop offset="55%" stop-color="#453a2d"/><stop offset="100%" stop-color="#2d251d"/>
+        </linearGradient>
+        <linearGradient id="tube" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#7a5220"/><stop offset="40%" stop-color="#e3ab4c"/><stop offset="100%" stop-color="#6d4718"/>
+        </linearGradient>
+      </defs>
+      <path d="M52 18 L360 14 L366 232 L58 236 Z" fill="url(#stone)" stroke="#736251" stroke-width="2.5"/>
+      <path d="M52 18 L360 14 L358 24 L56 28 Z" fill="#847360" opacity=".5"/>
+      <path d="M352 118 L366 232 L338 236 Z" fill="#000" opacity=".22"/>
+      <text x="209" y="46" text-anchor="middle" fill="#d3c7b4" font-family="Manrope, sans-serif" font-size="14" letter-spacing="4">ΚΛΗΡΩΤΗΡΙΟΝ</text>
+      <line x1="80" y1="57" x2="340" y2="56" stroke="#736251" stroke-width="1.5"/>
+      <rect x="24" y="22" width="19" height="210" rx="9" fill="url(#tube)" stroke="#4e3312" stroke-width="1.5"/>
+      <circle cx="33.5" cy="52" r="5.2" fill="#100d0a"/><circle cx="33.5" cy="94" r="5.2" fill="#f4f2ee"/>
+      <circle cx="33.5" cy="136" r="5.2" fill="#100d0a"/><circle cx="33.5" cy="178" r="5.2" fill="#f4f2ee"/>
+      <g id="slots"></g>
+    </svg>
+    <div>
+      <p class="muted">In Athens around 370 BC a slab of stone picked juries. People put their bronze
+        tokens into the slots, black and white dice went down the tube on the side, and each die took
+        or dropped a whole row. It existed because a seat on a jury was worth buying.</p>
+      <p class="muted">Same thing here. Your balance is the token in the slot, a block hash replaced the
+        dice, and unlike in Athens you can check the result afterwards yourself.</p>
+    </div>
   </div>
-  <div id="checkOut">Checked against the published snapshot of the most recent draw.</div>
+
+  <div class="how">
+    <p><b>1</b><span>Before a draw runs, the block it will use is published. That block has not happened yet, so nobody knows its hash, us included.</span></p>
+    <p><b>2</b><span>When the block lands, every holder balance is read at that exact block and published together with the result.</span></p>
+    <p><b>3</b><span>The winner is <code>keccak(blockhash, token, draw#) mod total weight</code>, going through holders sorted by address.</span></p>
+    <p><b>4</b><span>Run <code>verify draws/N.json</code> on any past draw. If it returns a different winner, we lied.</span></p>
+  </div>
 </section>
 
 <section>
   <h2>Recent draws</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>#</th><th>Type</th><th>Winner</th><th>Prize</th><th>When</th><th>Proof</th></tr></thead>
-      <tbody id="rows"><tr><td colspan="6" style="color:var(--stone-dim)">Loading…</td></tr></tbody>
+      <thead><tr><th>#</th><th>Type</th><th>Winner</th><th>Prize</th><th>When</th><th>Record</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="6">Loading…</td></tr></tbody>
     </table>
   </div>
 </section>
 
 <section>
-  <h2>Why it cannot be rigged</h2>
-  <p class="origin">
-    In Athens, around 370 BC, a slab of stone decided who sat on a jury. Citizens pressed their
-    bronze tokens into its slots, black and white dice ran down the tube beside it, and each die
-    took or dismissed an entire row. <em>It existed so that a seat could not be bought.</em>
-    This is the same machine, with a block hash in place of the dice.
-  </p>
-  <div class="proof">
-    <p><span class="n">1</span><span>Before every draw the block it is bound to is published. That block does not exist yet, so its hash is unknown to everyone, this project included.</span></p>
-    <p><span class="n">2</span><span>When the block arrives, every holder balance is read at that exact block and the full list is published with the result.</span></p>
-    <p><span class="n">3</span><span>The winner is <code>keccak(blockhash, token, draw#) mod total_weight</code>, walking holders sorted by address. Your weight is your balance.</span></p>
-    <p><span class="n">4</span><span>Run <code>verify draws/N.json</code> against any past draw and it returns the same winner, or the record is a lie.</span></p>
+  <h2>Check your wallet</h2>
+  <div class="check">
+    <input id="addr" placeholder="0x… your wallet" spellcheck="false" autocomplete="off">
+    <button class="buy" id="checkBtn" type="button" style="padding:13px 24px;font-size:.95rem">Check</button>
+  </div>
+  <div id="checkOut">Checked against the published snapshot of the last draw.</div>
+</section>
+
+<section>
+  <div class="archive">
+    <div>
+      <h2 style="margin:0 0 6px">Check it yourself</h2>
+      <p>Every draw record, including the full list of balances it used, is committed to a public
+         repository the moment the draw happens. The history is timestamped and cannot be rewritten quietly.</p>
+    </div>
+    <a class="btn" id="repoLink2" href="#" target="_blank" rel="noopener">Open the archive</a>
   </div>
 </section>
 
 <footer>
-  <span id="updated">—</span> · <a id="explorerLink" href="#" target="_blank" rel="noopener">explorer</a>
+  <span id="updated">—</span>
+  <span><a id="explorerLink" href="#" target="_blank" rel="noopener">explorer</a></span>
 </footer>
 
 </div>
 
 <script>
-// ---- config -------------------------------------------------------------
 const CFG = {
-  ticker:   "$KLERO",
-  token:    "",                                   // contract address after launch
-  explorer: "https://robinhoodchain.blockscout.com",
-  state:    "site.json",
-  draws:    "draws",
-  symbol:   "ETH",
-  decimals: 18,
-  x:        "",                                   // https://x.com/...
-  buy:      "",                                   // DEX link
+  ticker:"$KLERO", token:"", pair:"", chain:"robinhood",
+  explorer:"https://robinhoodchain.blockscout.com",
+  repo:"https://github.com/mastadont044/kleroterion",
+  state:"site.json", draws:"draws", symbol:"ETH", decimals:18,
+  x:"", telegram:"", buy:"",
+  launchAt:"",   // e.g. "2026-09-20T18:00:00Z" — before launch the clock counts down to this
 };
+
+// Market cap comes from site.json (written by the worker). The browser also asks
+// dexscreener directly so the number moves between pushes; if that call is blocked
+// the page silently falls back to whatever the worker last published.
+let liveMc = null;
+
+async function loadMarketCap(){
+  if(!CFG.token) return;
+  try{
+    const r = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CFG.token}`,{cache:"no-store"});
+    if(!r.ok) return;
+    const pairs = ((await r.json())||{}).pairs || [];
+    if(!pairs.length) return;
+    pairs.sort((a,b)=>Number((b.liquidity||{}).usd||0)-Number((a.liquidity||{}).usd||0));
+    const v = Number(pairs[0].marketCap || pairs[0].fdv || 0);
+    if(v > 0) liveMc = v;
+  }catch(e){}
+}
+
+const usd = n => n==null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
+
+// null = no gate configured at all.
+function gate(){
+  const min = Number(state.min_market_cap || 0);
+  if(!(min > 0)) return null;
+  const published = state.market_cap==null ? null : Number(state.market_cap);
+  return { min, mc: liveMc!=null ? liveMc : published, open: state.armed !== false };
+}
 
 const $ = id => document.getElementById(id);
-const short = a => a ? a.slice(0, 6) + "…" + a.slice(-4) : "—";
+const short = a => a ? a.slice(0,6) + "…" + a.slice(-4) : "—";
 
-function fromUnits(raw, decimals, places = 4) {
-  let s = String(raw ?? "0").replace(/[^0-9]/g, "") || "0";
-  s = s.padStart(decimals + 1, "0");
-  const int = s.slice(0, -decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  const frac = s.slice(-decimals).slice(0, places).replace(/0+$/, "");
+function fromUnits(raw, decimals, places=4){
+  let s = String(raw ?? "0").replace(/[^0-9]/g,"") || "0";
+  s = s.padStart(decimals+1,"0");
+  const int = s.slice(0,-decimals).replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  const frac = s.slice(-decimals).slice(0,places).replace(/0+$/,"");
   return frac ? `${int}.${frac}` : int;
 }
-function ago(ts) {
-  if (!ts) return "—";
-  const d = Math.max(0, Math.floor(Date.now() / 1000 - ts));
-  if (d < 60) return d + "s ago";
-  if (d < 3600) return Math.floor(d / 60) + "m ago";
-  if (d < 86400) return Math.floor(d / 3600) + "h ago";
-  return Math.floor(d / 86400) + "d ago";
+function ago(ts){
+  if(!ts) return "—";
+  const d = Math.max(0, Math.floor(Date.now()/1000 - ts));
+  if(d<60) return d+"s ago";
+  if(d<3600) return Math.floor(d/60)+"m ago";
+  if(d<86400) return Math.floor(d/3600)+"h ago";
+  return Math.floor(d/86400)+"d ago";
 }
-function mmss(sec) {
-  sec = Math.max(0, Math.round(sec));
-  return String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
-}
+const mmss = s => (s=Math.max(0,Math.round(s)),
+  String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"));
 
-// ---- the slab: 7 rows x 11 slots ---------------------------------------
-const ROWS = 7, COLS = 11;
-(function drawSlots() {
-  const g = $("slots");
-  let html = "";
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const x = 74 + c * 24, y = 70 + r * 23;
-      html += `<rect class="slot" id="s${r}-${c}" x="${x}" y="${y}" width="17" height="8" rx="2"/>`;
-    }
-  }
-  g.innerHTML = html;
+const ROWS=7, COLS=11;
+(function(){
+  let h="";
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++)
+    h += `<rect class="slot" id="s${r}-${c}" x="${74+c*24}" y="${70+r*23}" width="17" height="8" rx="2"/>`;
+  $("slots").innerHTML=h;
 })();
 
-function paintSlots(eligible, winnerSeed) {
-  const total = ROWS * COLS;
-  const filled = Math.max(1, Math.min(total, Math.round((eligible || 0) / 12)));
-  let hit = null;
-  if (winnerSeed) hit = parseInt(winnerSeed.slice(-4), 16) % filled;
-  let i = 0;
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++, i++) {
-      const el = $(`s${r}-${c}`);
-      el.classList.toggle("filled", i < filled);
-      el.classList.toggle("hit", hit !== null && i === hit);
-    }
+function paintSlots(eligible, seed){
+  const total=ROWS*COLS;
+  const filled=Math.max(1,Math.min(total,Math.round((eligible||0)/12)||1));
+  const hit = seed ? parseInt(seed.slice(-4),16)%filled : null;
+  let i=0;
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++,i++){
+    const el=$(`s${r}-${c}`);
+    el.classList.toggle("filled", i<filled);
+    el.classList.toggle("hit", hit!==null && i===hit);
   }
 }
 
-const DEMO = {
-  demo: true, pot: "0", payout_bps: 100, big_payout_bps: 2000, big_every: 12,
-  draws_until_big: 12, interval_sec: 300, next_draw: null,
-  updated_at: Math.floor(Date.now() / 1000), recent: [],
-};
-
-let state = DEMO, latestSnapshot = null, nextDrawAt = null;
-
-function render() {
+function applyLinks(){
   $("tick").textContent = CFG.ticker;
-  $("caBtn").textContent = CFG.token ? short(CFG.token) : "contract not set";
+  $("caBtn").textContent = CFG.token ? short(CFG.token) : "contract soon";
   $("explorerLink").href = CFG.token ? `${CFG.explorer}/token/${CFG.token}` : CFG.explorer;
-  $("xLink").href = CFG.x || "#";
-  $("buyLink").href = CFG.buy || "#";
+  const set=(id,url)=>{const el=$(id);
+    if(url){el.href=url; el.removeAttribute("aria-disabled");}
+    else{el.href="#"; el.setAttribute("aria-disabled","true");}};
+  set("xLink",CFG.x); set("tgLink",CFG.telegram); set("buyLink",CFG.buy);
+  $("buyLink").textContent = CFG.buy ? `Buy ${CFG.ticker}` : "Not live yet";
+  $("repoLink").href = CFG.repo; $("repoLink2").href = CFG.repo;
+  if(CFG.pair){
+    const f=$("chartFrame");
+    f.src=`https://dexscreener.com/${CFG.chain}/${CFG.pair}?embed=1&theme=dark&info=0&trades=0`;
+    f.hidden=false; $("chartEmpty").hidden=true;
+  }
+}
 
-  $("pot").firstChild.nodeValue = fromUnits(state.pot, CFG.decimals);
-  $("potSym").textContent = " " + CFG.symbol;
-  $("microPct").textContent = (state.payout_bps / 100) + "%";
-  $("microEvery").textContent = `of the pool, every ${Math.round(state.interval_sec / 60)} min`;
-  $("bigPct").textContent = (state.big_payout_bps / 100) + "%";
-  $("bigEvery").textContent =
-    `of the pool, every ${Math.round(state.big_every * state.interval_sec / 60)} min`;
-  $("bigIn").textContent = state.draws_until_big != null ? state.draws_until_big + " draws" : "—";
+const DEMO={demo:true,pot:"0",payout_bps:100,big_payout_bps:2000,big_every:12,
+  draws_until_big:12,interval_sec:300,next_draw:null,
+  updated_at:Math.floor(Date.now()/1000),recent:[]};
+let state=DEMO, latestSnapshot=null, nextDrawAt=null;
+
+let seenTopDraw = null;
+
+function render(){
+  const g = gate();
+  const live = !state.demo && String(state.pot||"0")!=="0";
+  const potText = live ? `${fromUnits(state.pot,CFG.decimals)} ${CFG.symbol}`
+                       : "fills up once trading starts";
+  for(const id of ["pot","pot2"]){
+    const el=$(id);
+    el.classList.toggle("pending",!live);
+    el.textContent = potText;
+  }
+  $("potLabel").textContent = (g && !g.open) ? "Prize pool · already filling" : "Prize pool";
+
+  const note = $("gateNote");
+  if(g && !g.open){
+    note.hidden = false;
+    note.innerHTML = `Draws begin the moment the market cap reaches <b>${usd(g.min)}</b>. `+
+      `Until then every fee still goes into the pot and nothing is paid out, so the first `+
+      `draw is the largest one there will ever be.`;
+  }else if(g && state.armed_at){
+    note.hidden = false;
+    note.textContent = `The ${usd(g.min)} market cap was reached. The draws are running and `+
+      `do not stop again, whatever the price does.`;
+  }else{
+    note.hidden = true;
+  }
+
+  $("microPct").textContent = (state.payout_bps/100)+"%";
+  $("bigPct").textContent = (state.big_payout_bps/100)+"%";
 
   const last = state.recent && state.recent[0];
   $("holders").textContent = last ? last.eligible_holders : "—";
-  paintSlots(last ? last.eligible_holders : 0, last ? last.block_hash : null);
+  $("totalDraws").textContent = last ? last.draw : "—";
+  paintSlots(last?last.eligible_holders:0, last?last.block_hash:null);
 
-  const rows = $("rows");
-  if (!state.recent || !state.recent.length) {
-    rows.innerHTML = `<tr><td colspan="6" style="color:var(--stone-dim)">No draws yet. The first one runs once the pool is funded.</td></tr>`;
+  const rows=$("rows");
+  if(!state.recent || !state.recent.length){
+    rows.innerHTML = `<tr><td colspan="6">${g && !g.open
+      ? `No draws yet. The first one runs at ${usd(g.min)} market cap.`
+      : "No draws yet. They start once the pool is funded."}</td></tr>`;
   } else {
-    rows.innerHTML = state.recent.map(d => `
-      <tr>
+    const isNew = seenTopDraw !== null && last && last.draw > seenTopDraw;
+    rows.innerHTML = state.recent.map((d,i)=>`
+      <tr class="${isNew && i===0 ? "fresh" : ""}">
         <td class="mono">${d.draw}</td>
-        <td><span class="kind ${d.kind === "big" ? "big" : ""}">${d.kind || "micro"}</span></td>
+        <td><span class="kind ${d.kind==="big"?"big":""}">${d.kind||"micro"}</span></td>
         <td class="mono"><a href="${CFG.explorer}/address/${d.winner}" target="_blank" rel="noopener">${short(d.winner)}</a></td>
-        <td class="mono amt">${fromUnits(d.prize_amount, CFG.decimals)} ${CFG.symbol}</td>
+        <td class="mono amt">${fromUnits(d.prize_amount,CFG.decimals)} ${CFG.symbol}</td>
         <td>${ago(d.timestamp)}</td>
-        <td class="mono">${d.tx ? `<a href="${CFG.explorer}/tx/${d.tx}" target="_blank" rel="noopener">tx</a>` : "—"}</td>
+        <td class="mono">${d.tx ? `<a href="${CFG.explorer}/tx/${d.tx}" target="_blank" rel="noopener">tx</a>`
+          : `<a href="draw.html?n=${d.draw}">replay</a>`}</td>
       </tr>`).join("");
+    if(last) seenTopDraw = last.draw;
   }
 
-  const stale = Date.now() / 1000 - (state.updated_at || 0) > 3 * (state.interval_sec || 300);
-  $("updated").innerHTML = state.demo
-    ? `<span class="stale">waiting for the first draw</span>`
-    : `updated ${ago(state.updated_at)}` + (stale ? ` <span class="stale">· worker may be down</span>` : "");
+  const stale = Date.now()/1000-(state.updated_at||0) > 3*(state.interval_sec||300);
+  $("updated").innerHTML = state.demo ? `<span class="stale">draws start after launch</span>`
+    : `updated ${ago(state.updated_at)}` + (stale?` <span class="stale">· worker may be down</span>`:"");
 }
 
-function tick() {
-  $("countdown").textContent = nextDrawAt ? mmss(nextDrawAt - Date.now() / 1000) : "—";
+function hms(sec){
+  sec=Math.max(0,Math.round(sec));
+  const d=Math.floor(sec/86400), h=Math.floor(sec%86400/3600),
+        m=Math.floor(sec%3600/60), s=sec%60;
+  if(d) return `${d}d ${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+  if(h) return `${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  return mmss(sec);
 }
 
-async function load() {
-  try {
-    const r = await fetch(CFG.state + "?t=" + Date.now(), { cache: "no-store" });
-    if (!r.ok) throw new Error(r.status);
+function tick(){
+  const clock=$("countdown"), label=$("pulseLabel"), box=$("pulse"), fill=$("trackFill");
+  const sub=$("gateSub");
+  const launch = CFG.launchAt ? Date.parse(CFG.launchAt)/1000 : null;
+  clock.classList.remove("small");
+  box.classList.remove("due","bignext","locked");
+  sub.hidden = true;
+
+  // The gate: no draw runs until the market cap clears the threshold. The big number
+  // becomes the market cap itself, so the wait is something to watch, not a blank page.
+  const g = gate();
+  if(g && !g.open){
+    box.classList.add("locked");
+    if(g.mc == null){
+      label.innerHTML = `Draws unlock at <b>${usd(g.min)}</b> market cap`;
+      clock.textContent = "—";
+      clock.classList.add("small");
+      fill.style.width = "0%";
+      sub.innerHTML = "Waiting for the first trades to show up on the chart.";
+    }else if(g.mc >= g.min){
+      label.innerHTML = `<b>${usd(g.min)}</b> reached — first draw starting`;
+      clock.textContent = usd(g.mc);
+      fill.style.width = "100%";
+      sub.innerHTML = "The pot is unlocked. The first draw lands within five minutes.";
+    }else{
+      label.innerHTML = `Market cap · draws unlock at <b>${usd(g.min)}</b>`;
+      clock.textContent = usd(g.mc);
+      fill.style.width = Math.max(1, Math.min(100, g.mc/g.min*100)) + "%";
+      sub.innerHTML = `<b>${usd(g.min-g.mc)}</b> to go — the pot keeps filling the whole time.`;
+    }
+    sub.hidden = false;
+    return;
+  }
+
+  // Before the first draw: count down to launch if we know it, otherwise stay quiet.
+  if(!nextDrawAt){
+    if(launch && launch > Date.now()/1000){
+      label.innerHTML = "Launch in";
+      clock.textContent = hms(launch - Date.now()/1000);
+      fill.style.width = "0%";
+    }else{
+      label.innerHTML = "Draws every <b>5 minutes</b> once the token is live";
+      clock.textContent = "—";
+      clock.classList.add("small");
+      fill.style.width = "0%";
+    }
+    return;
+  }
+
+  const left = nextDrawAt - Date.now()/1000;
+  const interval = state.interval_sec || 300;
+  const bigNext = state.draws_until_big === 1;
+
+  if(left <= 0){
+    box.classList.add("due");
+    label.textContent = "Drawing now";
+    clock.textContent = "00:00";
+    fill.style.width = "100%";
+    return;
+  }
+  if(bigNext) box.classList.add("bignext");
+  label.innerHTML = bigNext
+    ? `Next one is the <b>hourly draw</b>`
+    : (state.draws_until_big != null
+        ? `Next draw · hourly one in <b>${state.draws_until_big}</b>`
+        : "Next draw");
+  clock.textContent = mmss(left);
+  fill.style.width = Math.max(0, Math.min(100, (1 - left/interval) * 100)) + "%";
+}
+
+async function load(){
+  try{
+    const r = await fetch(CFG.state+"?t="+Date.now(),{cache:"no-store"});
+    if(!r.ok) throw new Error(r.status);
     state = await r.json();
     const base = (state.next_draw && state.next_draw.announced_at) || state.updated_at;
-    nextDrawAt = base + (state.interval_sec || 300);
+    nextDrawAt = base + (state.interval_sec||300);
+    // Nothing is scheduled while the gate is shut: do not show a countdown to a draw
+    // that is not coming.
+    if(state.armed === false) nextDrawAt = null;
     const last = state.recent && state.recent[0];
-    if (last) loadSnapshot(last.draw);
-  } catch (e) {
-    state = DEMO;
-    nextDrawAt = null;
-  }
-  render();
-  tick();
+    if(last) loadSnapshot(last.draw);
+  }catch(e){ state=DEMO; nextDrawAt=null; }
+  render(); tick();
 }
 
-async function loadSnapshot(n) {
-  try {
-    const r = await fetch(`${CFG.draws}/${n}.json?t=` + Date.now(), { cache: "no-store" });
-    if (r.ok) latestSnapshot = await r.json();
-  } catch (e) { /* checker degrades to a hint */ }
+async function loadSnapshot(n){
+  try{
+    const r = await fetch(`${CFG.draws}/${n}.json?t=`+Date.now(),{cache:"no-store"});
+    if(r.ok) latestSnapshot = await r.json();
+  }catch(e){}
 }
 
-$("checkBtn").addEventListener("click", () => {
-  const raw = $("addr").value.trim();
-  const out = $("checkOut");
-  if (!/^0x[0-9a-fA-F]{40}$/.test(raw)) {
-    out.innerHTML = "That does not look like a wallet address.";
-    return;
-  }
-  if (!latestSnapshot) {
-    out.innerHTML = "No published snapshot yet. Check back after the first draw.";
-    return;
-  }
-  const key = Object.keys(latestSnapshot.snapshot || {})
-    .find(a => a.toLowerCase() === raw.toLowerCase());
-  if (!key) {
-    out.innerHTML = "<b>Not in the last draw.</b> The balance was below the minimum, or the wallet is on the published excluded list.";
-    return;
-  }
-  const mine = BigInt(latestSnapshot.snapshot[key]);
-  const total = BigInt(latestSnapshot.total_weight);
-  const pct = Number(mine * 1000000n / total) / 10000;
-  out.innerHTML = `<b>In the slot.</b> Weight ${fromUnits(mine.toString(), latestSnapshot.decimals, 2)} ` +
-    `of ${fromUnits(total.toString(), latestSnapshot.decimals, 2)} — ` +
+$("checkBtn").addEventListener("click",()=>{
+  const raw=$("addr").value.trim(), out=$("checkOut");
+  if(!/^0x[0-9a-fA-F]{40}$/.test(raw)){ out.innerHTML="That is not a wallet address."; return; }
+  if(!latestSnapshot){ out.innerHTML="No published snapshot yet. Come back after the first draw."; return; }
+  const key=Object.keys(latestSnapshot.snapshot||{}).find(a=>a.toLowerCase()===raw.toLowerCase());
+  if(!key){ out.innerHTML="<b>Not in the last draw.</b> Balance below the minimum, or the wallet is on the published excluded list."; return; }
+  const mine=BigInt(latestSnapshot.snapshot[key]), total=BigInt(latestSnapshot.total_weight);
+  const pct=Number(mine*1000000n/total)/10000;
+  out.innerHTML=`<b>You are in.</b> Weight ${fromUnits(mine.toString(),latestSnapshot.decimals,2)} of `+
+    `${fromUnits(total.toString(),latestSnapshot.decimals,2)} — `+
     `<span class="odds">${pct.toFixed(3)}%</span> chance in draw #${latestSnapshot.draw}.`;
 });
 
-$("caBtn").addEventListener("click", async () => {
-  if (!CFG.token) return;
-  try {
+$("caBtn").addEventListener("click",async()=>{
+  if(!CFG.token) return;
+  try{
     await navigator.clipboard.writeText(CFG.token);
-    const el = $("caBtn"), old = el.textContent;
-    el.textContent = "copied";
-    setTimeout(() => (el.textContent = old), 1400);
-  } catch (e) { /* clipboard blocked, address stays visible */ }
+    const el=$("caBtn"), old=el.textContent;
+    el.textContent="copied"; setTimeout(()=>el.textContent=old,1400);
+  }catch(e){}
 });
 
-render();
-load();
-setInterval(load, 20000);
+applyLinks(); render(); load(); loadMarketCap();
+
+// While the gate is shut the market cap is the live number on the page, so refresh it
+// on its own cadence rather than waiting for the worker's next push.
+setInterval(() => {
+  const g = gate();
+  if(g && !g.open) loadMarketCap().then(() => { render(); tick(); });
+}, 30000);
+
+// Poll slowly, but speed up while a draw is due so the new winner shows up fast.
+let lastPoll = 0;
+setInterval(() => {
+  const due = nextDrawAt && nextDrawAt - Date.now()/1000 <= 2;
+  const gap = due ? 4000 : 20000;
+  if (Date.now() - lastPoll >= gap) { lastPoll = Date.now(); load(); }
+}, 1000);
 setInterval(tick, 1000);
 </script>
 </body>

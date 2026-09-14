@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draw replay — Kleroterion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#111010;--panel:#1a1918;--panel-2:#221f1d;--line:#302d29;
+  --text:#f4f2ee;--soft:#c6c1b9;--dim:#928d85;
+  --gold:#e3ab4c;--gold-soft:#f0c375;--green:#63c2a0;--red:#e0674a;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif;
+  font-size:17px;line-height:1.68;padding-inline:20px;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1060px;margin:0 auto}
+a{color:var(--gold-soft);text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+p{margin:0 0 14px}
+
+header{padding-block:24px 4px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:1.05rem}
+.brand span{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:500;margin-left:8px}
+.btn{font-size:.83rem;border-radius:6px;padding:8px 13px;border:1px solid var(--line);
+  color:var(--soft);background:var(--panel);font-weight:500;cursor:pointer;font-family:inherit}
+.btn:hover{color:var(--text);border-color:#4a453f;text-decoration:none}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.btn.go{background:var(--gold);color:#181205;border-color:var(--gold);font-weight:700}
+.btn.go:hover{background:var(--gold-soft)}
+
+.title{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-top:14px}
+h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;margin:0;letter-spacing:-.015em}
+.kind{font-size:.8rem;padding:3px 10px;border-radius:5px;border:1px solid var(--line);color:var(--dim)}
+.kind.big{color:var(--red);border-color:#4d2c21}
+.when{color:var(--dim);font-size:.9rem}
+
+.stage{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;margin-top:22px;align-items:start}
+.machine{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.slot{fill:#0a0908;transition:fill .25s}
+.slot.filled{fill:#7a6b52}
+.slot.live{fill:var(--gold)}
+.slot.dead{fill:#2a2724}
+.slot.win{fill:var(--green)}
+@keyframes win{0%,100%{opacity:1}50%{opacity:.35}}
+.slot.win{animation:win 1.6s ease-in-out infinite}
+.die{transition:transform .5s cubic-bezier(.4,1.4,.6,1)}
+
+.steps{display:flex;flex-direction:column;gap:2px}
+.step{padding:14px 16px;border-left:2px solid var(--line);opacity:.38;transition:opacity .3s,border-color .3s}
+.step.on{opacity:1;border-left-color:var(--gold)}
+.step.done{opacity:.72;border-left-color:#4a4238}
+.step h3{margin:0 0 4px;font-size:.98rem;font-weight:700}
+.step p{margin:0;color:var(--soft);font-size:.9rem}
+.step .val{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--gold-soft);
+  word-break:break-all;display:block;margin-top:6px}
+
+.result{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+.result.ok{border-color:#3f6b5a}
+.result .who{font-family:'JetBrains Mono',monospace;font-size:clamp(.95rem,2.4vw,1.3rem);
+  color:var(--green);word-break:break-all;margin-top:4px}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.badge{font-size:.82rem;padding:5px 11px;border-radius:6px;border:1px solid var(--line);color:var(--dim)}
+.badge.ok{color:var(--green);border-color:#3f6b5a}
+.badge.bad{color:var(--red);border-color:#5c3226}
+
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}
+.controls .spacer{flex:1}
+
+.explain{margin-top:44px;border-top:1px solid var(--line);padding-top:22px}
+h2{font-size:1.3rem;font-weight:800;margin:0 0 14px}
+.explain p{color:var(--soft)}
+code{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;
+  font-family:'JetBrains Mono',monospace;font-size:.84em;color:var(--text)}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+  overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.84rem;color:var(--soft)}
+footer{padding-block:30px 46px;color:var(--dim);font-size:.85rem;border-top:1px solid var(--line);margin-top:44px}
+@media(max-width:860px){.stage{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand"><a href="index.html" style="color:inherit">Kleroterion</a><span>$KLERO</span></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <a class="btn" href="index.html">Back to the site</a>
+    <a class="btn" id="rawLink" href="#" target="_blank" rel="noopener">Raw record</a>
+  </div>
+</header>
+
+<div class="title">
+  <h1 id="drawTitle">Draw</h1>
+  <span class="kind" id="drawKind">—</span>
+  <span class="when" id="drawWhen"></span>
+</div>
+
+<div class="stage">
+  <svg class="machine" viewBox="0 0 380 260" role="img" aria-label="Kleroterion replaying a draw">
+    <defs>
+      <linearGradient id="stone" x1="0" y1="0" x2="0.3" y2="1">
+        <stop offset="0%" stop-color="#635648"/><stop offset="55%" stop-color="#453a2d"/><stop offset="100%" stop-color="#2d251d"/>
+      </linearGradient>
+      <linearGradient id="tube" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#7a5220"/><stop offset="40%" stop-color="#e3ab4c"/><stop offset="100%" stop-color="#6d4718"/>
+      </linearGradient>
+    </defs>
+    <path d="M52 26 L360 22 L366 240 L58 244 Z" fill="url(#stone)" stroke="#736251" stroke-width="2.5"/>
+    <path d="M52 26 L360 22 L358 32 L56 36 Z" fill="#847360" opacity=".5"/>
+    <text x="209" y="54" text-anchor="middle" fill="#d3c7b4" font-family="Manrope, sans-serif"
+          font-size="13" letter-spacing="4">ΚΛΗΡΩΤΗΡΙΟΝ</text>
+    <line x1="80" y1="64" x2="340" y2="63" stroke="#736251" stroke-width="1.5"/>
+    <rect x="24" y="30" width="19" height="210" rx="9" fill="url(#tube)" stroke="#4e3312" stroke-width="1.5"/>
+    <g id="dice"></g>
+    <g id="slots"></g>
+    <text id="stageNote" x="209" y="252" text-anchor="middle" fill="#928d85"
+          font-family="'JetBrains Mono', monospace" font-size="9"></text>
+  </svg>
+
+  <div class="steps" id="steps">
+    <div class="step" data-i="0">
+      <h3>1. The block was named in advance</h3>
+      <p>Before this draw ran, the block it would use was published. At that moment the block did not exist, so nobody could know its hash.</p>
+      <span class="val" id="v-block"></span>
+    </div>
+    <div class="step" data-i="1">
+      <h3>2. The block landed</h3>
+      <p>Its hash is fixed by the chain and the same for everyone. Nothing here is generated by us.</p>
+      <span class="val" id="v-hash"></span>
+    </div>
+    <div class="step" data-i="2">
+      <h3>3. Balances were read at that block</h3>
+      <p>Every holder above the minimum, with the excluded addresses removed. The full list is published with the record.</p>
+      <span class="val" id="v-holders"></span>
+    </div>
+    <div class="step" data-i="3">
+      <h3>4. The hash became a number</h3>
+      <p>Hash, token address and draw number are hashed together, then taken modulo the total weight. Your weight is your balance.</p>
+      <span class="val" id="v-target"></span>
+    </div>
+    <div class="step" data-i="4">
+      <h3>5. Walking the holders</h3>
+      <p>Holders sorted by address, adding up weights until the sum passes that number. Whoever it lands on wins.</p>
+      <span class="val" id="v-walk"></span>
+    </div>
+    <div class="step" data-i="5">
+      <h3>6. Winner</h3>
+      <p>Same input, same output, every time. Anyone can repeat this.</p>
+      <span class="val" id="v-winner"></span>
+    </div>
+  </div>
+</div>
+
+<div class="result" id="result">
+  <div style="color:var(--dim);font-size:.9rem">Winner</div>
+  <div class="who mono" id="winnerBig">—</div>
+  <div class="badges" id="badges"></div>
+</div>
+
+<div class="controls">
+  <button class="btn go" id="replay">Replay</button>
+  <button class="btn" id="prev">← Previous draw</button>
+  <button class="btn" id="next">Next draw →</button>
+  <span class="spacer"></span>
+  <span class="when mono" id="drawNav"></span>
+</div>
+
+<div class="explain">
+  <h2>How to check this yourself</h2>
+  <p>This page did not take the record's word for it. It downloaded the published list of balances,
+     hashed the block hash together with the token address and the draw number in your browser, and
+     walked the holders itself. The green badge above only appears when that result matches what was
+     recorded.</p>
+  <p>If you prefer doing it outside a browser, the worker is a single Python file:</p>
+  <pre>python draw_worker.py verify draws/<span id="cmdN">1</span>.json</pre>
+  <p>Both paths do the same arithmetic:</p>
+  <pre>target = keccak256(blockhash ‖ token ‖ draw number) mod total weight
+winner = first holder, sorted by address, whose running total passes target</pre>
+  <p>The only thing that could bend a draw is knowing the block hash before committing to the block.
+     That is why the block number is published while the block is still in the future.</p>
+</div>
+
+<footer><a href="index.html">← back to the site</a></footer>
+</div>
+
+<script>
+// Minimal keccak-256 (Ethereum flavour: 0x01 padding). No dependencies.
+const keccak256 = (() => {
+  const RC = [
+    0x0000000000000001n, 0x0000000000008082n, 0x800000000000808an, 0x8000000080008000n,
+    0x000000000000808bn, 0x0000000080000001n, 0x8000000080008081n, 0x8000000000008009n,
+    0x000000000000008an, 0x0000000000000088n, 0x0000000080008009n, 0x000000008000000an,
+    0x000000008000808bn, 0x800000000000008bn, 0x8000000000008089n, 0x8000000000008003n,
+    0x8000000000008002n, 0x8000000000000080n, 0x000000000000800an, 0x800000008000000an,
+    0x8000000080008081n, 0x8000000000008080n, 0x0000000080000001n, 0x8000000080008008n];
+  const R = [0,1,62,28,27,36,44,6,55,20,3,10,43,25,39,41,45,15,21,8,18,2,61,56,14];
+  const M = (1n << 64n) - 1n;
+  const rotl = (x, n) => n ? ((x << BigInt(n)) | (x >> BigInt(64 - n))) & M : x;
+
+  function permute(A){
+    for(let round = 0; round < 24; round++){
+      const C = new Array(5), D = new Array(5);
+      for(let x = 0; x < 5; x++) C[x] = A[x] ^ A[x+5] ^ A[x+10] ^ A[x+15] ^ A[x+20];
+      for(let x = 0; x < 5; x++) D[x] = C[(x+4)%5] ^ rotl(C[(x+1)%5], 1);
+      for(let x = 0; x < 5; x++) for(let y = 0; y < 5; y++) A[x+5*y] ^= D[x];
+
+      const B = new Array(25);
+      for(let x = 0; x < 5; x++) for(let y = 0; y < 5; y++)
+        B[y + 5*((2*x + 3*y) % 5)] = rotl(A[x + 5*y], R[x + 5*y]);
+
+      for(let x = 0; x < 5; x++) for(let y = 0; y < 5; y++)
+        A[x + 5*y] = B[x + 5*y] ^ ((~B[(x+1)%5 + 5*y] & M) & B[(x+2)%5 + 5*y]);
+
+      A[0] ^= RC[round];
+    }
+  }
+
+  // bytes (Uint8Array) -> 32-byte digest as lowercase hex, no 0x
+  return function keccak256(bytes){
+    const rate = 136;
+    const padded = new Uint8Array(Math.ceil((bytes.length + 1) / rate) * rate);
+    padded.set(bytes);
+    padded[bytes.length] = 0x01;
+    padded[padded.length - 1] |= 0x80;
+
+    const A = new Array(25).fill(0n);
+    for(let off = 0; off < padded.length; off += rate){
+      for(let i = 0; i < rate / 8; i++){
+        let lane = 0n;
+        for(let b = 7; b >= 0; b--) lane = (lane << 8n) | BigInt(padded[off + i*8 + b]);
+        A[i] ^= lane;
+      }
+      permute(A);
+    }
+
+    let out = "";
+    for(let i = 0; i < 4; i++){
+      let lane = A[i];
+      for(let b = 0; b < 8; b++){
+        out += (lane & 0xffn).toString(16).padStart(2, "0");
+        lane >>= 8n;
+      }
+    }
+    return out;
+  };
+})();
+</script>
+<script>
+const CFG = { draws:"draws", state:"site.json",
+  repo:"https://github.com/mastadont044/kleroterion",
+  explorer:"https://robinhoodchain.blockscout.com", symbol:"ETH" };
+
+const $ = id => document.getElementById(id);
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = ms => new Promise(r => setTimeout(r, reduced ? 0 : ms));
+const short = a => a ? a.slice(0,10) + "…" + a.slice(-6) : "—";
+function fromUnits(raw, dec, places=4){
+  let s=String(raw??"0").replace(/[^0-9]/g,"")||"0"; s=s.padStart(dec+1,"0");
+  const i=s.slice(0,-dec).replace(/\B(?=(\d{3})+(?!\d))/g,","), f=s.slice(-dec).slice(0,places).replace(/0+$/,"");
+  return f?`${i}.${f}`:i;
+}
+
+// ---- slab -------------------------------------------------------------
+const ROWS=8, COLS=12, CELL=[];
+(function(){
+  let h="";
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    const id=`s${r}-${c}`; CELL.push(id);
+    h += `<rect class="slot" id="${id}" x="${72+c*22}" y="${76+r*20}" width="15" height="7" rx="2"/>`;
+  }
+  $("slots").innerHTML=h;
+  $("dice").innerHTML = [0,1,2,3].map(i =>
+    `<circle class="die" id="d${i}" cx="33.5" cy="${58+i*44}" r="5" fill="${i%2?"#f4f2ee":"#100d0a"}"/>`).join("");
+})();
+const setSlots = cls => CELL.forEach(id => $(id).className.baseVal = "slot" + (cls?" "+cls:""));
+
+function stepOn(i){
+  document.querySelectorAll(".step").forEach(el=>{
+    const n=+el.dataset.i;
+    el.classList.toggle("on", n===i);
+    el.classList.toggle("done", n<i);
+  });
+}
+
+// ---- independent recompute -------------------------------------------
+function hexToBytes(h){
+  h=h.replace(/^0x/,"");
+  const out=new Uint8Array(h.length/2);
+  for(let i=0;i<out.length;i++) out[i]=parseInt(h.substr(i*2,2),16);
+  return out;
+}
+function u256(n){
+  let h=BigInt(n).toString(16).padStart(64,"0");
+  return hexToBytes(h);
+}
+function recompute(rec){
+  const parts=[hexToBytes(rec.block_hash), hexToBytes(rec.token), u256(rec.draw)];
+  const total=parts.reduce((a,p)=>a+p.length,0);
+  const buf=new Uint8Array(total);
+  let o=0; parts.forEach(p=>{buf.set(p,o); o+=p.length;});
+  const digest = keccak256(buf);   // inlined above, no external library
+  const holders = Object.entries(rec.snapshot)
+    .map(([a,w])=>[a,BigInt(w)])
+    .sort((x,y)=> x[0].toLowerCase() < y[0].toLowerCase() ? -1 : 1);
+  const sum = holders.reduce((a,[,w])=>a+w, 0n);
+  const target = BigInt("0x"+digest) % sum;
+  let acc=0n, winner=null, index=0;
+  for(let i=0;i<holders.length;i++){
+    acc += holders[i][1];
+    if(target < acc){ winner=holders[i][0]; index=i; break; }
+  }
+  return {digest, target, sum, winner, index, holders};
+}
+
+// ---- the replay -------------------------------------------------------
+let current=null, running=false;
+
+async function play(rec){
+  if(running) return;
+  running=true;
+  const calc = recompute(rec);
+  const eligible = calc.holders.length;
+  const shown = Math.min(CELL.length, Math.max(1, eligible));
+  const winnerCell = Math.floor(calc.index / eligible * shown);
+
+  setSlots(""); $("stageNote").textContent=""; $("badges").innerHTML="";
+  $("result").classList.remove("ok"); $("winnerBig").textContent="—";
+  ["v-block","v-hash","v-holders","v-target","v-walk","v-winner"].forEach(i=>$(i).textContent="");
+
+  stepOn(0);
+  $("v-block").textContent = `block #${rec.block}`;
+  $("stageNote").textContent = `block #${rec.block} announced, hash unknown`;
+  await sleep(1400);
+
+  stepOn(1);
+  $("v-hash").textContent = rec.block_hash;
+  $("stageNote").textContent = "block landed";
+  for(let i=0;i<4;i++){ $("d"+i).style.transform="translateY(14px)"; await sleep(120); }
+  for(let i=0;i<4;i++){ $("d"+i).style.transform=""; }
+  await sleep(900);
+
+  stepOn(2);
+  $("v-holders").textContent = `${eligible} holders in the draw`;
+  $("stageNote").textContent = `${eligible} balances read at that block`;
+  for(let i=0;i<shown;i++){ $(CELL[i]).classList.add("filled"); if(i%3===0) await sleep(26); }
+  await sleep(700);
+
+  stepOn(3);
+  $("v-target").textContent = `keccak → ${calc.target.toString()} of ${calc.sum.toString()}`;
+  $("stageNote").textContent = "hash turned into a number";
+  await sleep(1200);
+
+  stepOn(4);
+  $("stageNote").textContent = "walking holders, sorted by address";
+  for(let i=0;i<shown;i++){
+    $(CELL[i]).classList.remove("filled");
+    $(CELL[i]).classList.add(i===winnerCell ? "live" : "live");
+    await sleep(reduced?0:16);
+    if(i!==winnerCell){ $(CELL[i]).classList.remove("live"); $(CELL[i]).classList.add("dead"); }
+    if(i>=winnerCell) break;
+  }
+  for(let i=winnerCell+1;i<shown;i++){ $(CELL[i]).classList.remove("filled"); $(CELL[i]).classList.add("dead"); }
+  $("v-walk").textContent = `stopped at holder #${calc.index+1} of ${eligible}`;
+  await sleep(800);
+
+  stepOn(5);
+  $(CELL[winnerCell]).classList.remove("live","dead");
+  $(CELL[winnerCell]).classList.add("win");
+  $("v-winner").textContent = calc.winner;
+  $("stageNote").textContent = "winner";
+  $("winnerBig").textContent = calc.winner;
+
+  const match = calc.winner && rec.winner &&
+                calc.winner.toLowerCase() === rec.winner.toLowerCase();
+  const weight = rec.snapshot[calc.winner] ? BigInt(rec.snapshot[calc.winner]) : 0n;
+  const odds = calc.sum > 0n ? Number(weight*1000000n/calc.sum)/10000 : 0;
+  $("result").classList.toggle("ok", !!match);
+  $("badges").innerHTML =
+    `<span class="badge ${match?"ok":"bad"}">${match ? "recomputed in your browser · matches" : "MISMATCH with the record"}</span>` +
+    `<span class="badge">${odds.toFixed(3)}% chance</span>` +
+    `<span class="badge">prize ${fromUnits(rec.prize_amount||"0", rec.decimals||18)} ${CFG.symbol}</span>` +
+    (rec.tx ? `<span class="badge"><a href="${CFG.explorer}/tx/${rec.tx}" target="_blank" rel="noopener">payout tx</a></span>` : "");
+  running=false;
+}
+
+// ---- loading ----------------------------------------------------------
+async function loadDraw(n){
+  const r = await fetch(`${CFG.draws}/${n}.json?t=`+Date.now(), {cache:"no-store"});
+  if(!r.ok) throw new Error("no draw " + n);
+  const rec = await r.json();
+  current = rec;
+  $("drawTitle").textContent = `Draw #${rec.draw}`;
+  $("drawKind").textContent = rec.kind || "micro";
+  $("drawKind").className = "kind" + (rec.kind==="big" ? " big" : "");
+  $("drawWhen").textContent = rec.timestamp ? new Date(rec.timestamp*1000).toUTCString() : "";
+  $("rawLink").href = `${CFG.repo}/blob/main/draws/${rec.draw}.json`;
+  $("cmdN").textContent = rec.draw;
+  $("drawNav").textContent = `draw ${rec.draw}`;
+  $("prev").disabled = rec.draw <= 1;
+  history.replaceState(null,"",`?n=${rec.draw}`);
+  await play(rec);
+}
+
+async function latestDraw(){
+  try{
+    const r = await fetch(CFG.state+"?t="+Date.now(),{cache:"no-store"});
+    const s = await r.json();
+    return (s.recent && s.recent[0] && s.recent[0].draw) || 1;
+  }catch(e){ return 1; }
+}
+
+$("replay").addEventListener("click", ()=> current && play(current));
+$("prev").addEventListener("click", ()=> current && current.draw>1 && loadDraw(current.draw-1).catch(()=>{}));
+$("next").addEventListener("click", ()=> current && loadDraw(current.draw+1).catch(()=>{
+  $("drawNav").textContent = "that was the last one";
+}));
+
+(async ()=>{
+  const q = new URLSearchParams(location.search).get("n");
+  const n = q ? parseInt(q,10) : await latestDraw();
+  try{ await loadDraw(n); }
+  catch(e){
+    $("drawTitle").textContent = "No draws yet";
+    $("winnerBig").textContent = "The first replay appears after the first draw.";
+    $("replay").disabled = $("prev").disabled = $("next").disabled = true;
+  }
+})();
+</script>
+</body>
+</html>
